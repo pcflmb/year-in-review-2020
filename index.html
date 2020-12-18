@@ -20,7 +20,7 @@
 
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
-  <link rel="stylesheet" type="text/css" href="dist/halkaBox.min.css" />
+  <link rel="stylesheet" type="text/css" href="dist/simpleLightbox.min.css" />
   
   <style>
     .bd-placeholder-img {
@@ -37,6 +37,16 @@
       background-size: cover;
       background-repeat: no-repeat;
       background-position: center;
+    }
+
+    .slbIframeCont video {
+      position: absolute;
+      top: 0;
+      left: 0;
+      max-height: 100%;
+      width: auto;
+      margin-left: 50%;
+      transform: translateX(-50%);
     }
 
     @media (min-width: 768px) {
@@ -94,7 +104,7 @@
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
-  <script src="dist/halkaBox.min.js"></script>
+  <script src="dist/simpleLightbox.min.js"></script>
 
   <script type="text/javascript">
     function titleToClassName(title) {
@@ -105,12 +115,23 @@
 
     function renderImages() {
       // setup lightbox options
-      halkaBox.options({
-        animation: "slide",      // animation type on next/prev ("slide" || "fade")
-        theme: "dark",          // lightbox overlay theme ("light" || "dark")
-        preload: 3,              // number of images to preload
-        isZoomable: true         // ability to zoom image (true || false)
-      });
+      SimpleLightbox.defaults.videoRegex = new RegExp(/\.mov|\.mp4/);
+      SimpleLightbox.defaults.beforeSetContent = function(contents, lightboxThis) {
+        const iframe = contents.querySelector('iframe');
+        if (!iframe) {
+          return;
+        }
+        // create video element
+        const video = document.createElement('video');
+        video.src = iframe.src;
+        video.autoplay = "true";
+        video.controls = "true";
+        video.width = '800';
+
+        // swap out for video element
+        iframe.parentElement.appendChild(video);
+        iframe.parentElement.removeChild(iframe);
+      };
 
       let albumsHtml = '';
       for (let album of IMAGES) {
@@ -122,9 +143,6 @@
           continue;
         }
         const className = titleToClassName(album.folderName);
-        const links = files.map(f => {
-          return `<a href="./img/${folder}/${f.filename}" class="${className}"></a>`;
-        }).join('');
         const firstFile = files[0];
         const html = `<div class="col" id="card-${className}">
           <div class="card shadow-sm">
@@ -139,9 +157,6 @@
                 </div>
                 <small class="text-muted">${date}</small>
               </div>
-              <div class="lightbox-links">
-                ${links}
-              </div>
             </div>
           </div>
         </div>`;
@@ -152,10 +167,12 @@
       // after attaching the photo albums to the DOM, we can attach the lightbox
       for (let album of IMAGES) {
         const className = titleToClassName(album.folderName);
-        const gallery = halkaBox.run(className, {});
         document.querySelector('#card-' + className + ' button').addEventListener('click', function(e) {
           // open the first image
-          gallery.open(0);
+          const items = album.files.map(f => `./img/${album.folderName}/${f.filename}`);
+          SimpleLightbox.open({
+            items: items,
+          });
         });
       }
     }
@@ -254,7 +271,7 @@ const IMAGES = [
         "description":""
       },
       {
-        "filename":"IMG_1401.mov",
+        "filename":"IMG_1401.mp4",
         "description":""
       },
       {
@@ -266,7 +283,7 @@ const IMAGES = [
         "description":""
       },
       {
-        "filename":"IMG_1436.mov",
+        "filename":"IMG_1436.mp4",
         "description":""
       },
       {
@@ -274,7 +291,7 @@ const IMAGES = [
         "description":""
       },
       {
-        "filename":"IMG_1445.mov",
+        "filename":"IMG_1445.mp4",
         "description":""
       },
       {
@@ -282,7 +299,7 @@ const IMAGES = [
         "description":""
       },
       {
-        "filename":"IMG_1451.mov",
+        "filename":"IMG_1451.mp4",
         "description":""
       },
       {
@@ -290,7 +307,7 @@ const IMAGES = [
         "description":""
       },
       {
-        "filename":"IMG_1481.mov",
+        "filename":"IMG_1481.mp4",
         "description":""
       },
       {
@@ -298,7 +315,7 @@ const IMAGES = [
         "description":""
       },
       {
-        "filename":"IMG_1497.mov",
+        "filename":"IMG_1497.mp4",
         "description":""
       },
       {
@@ -407,7 +424,7 @@ const IMAGES = [
         "description":""
       },
       {
-        "filename":"IMG_1165.mov",
+        "filename":"IMG_1165.mp4",
         "description":""
       },
       {
@@ -415,7 +432,7 @@ const IMAGES = [
         "description":""
       },
       {
-        "filename":"IMG_1168.mov",
+        "filename":"IMG_1168.mp4",
         "description":""
       },
       {
@@ -489,7 +506,7 @@ const IMAGES = [
         "description":""
       },
       {
-        "filename":"IMG_0771.mov",
+        "filename":"IMG_0771.mp4",
         "description":""
       },
       {
@@ -856,7 +873,7 @@ const IMAGES = [
         "description":""
       },
       {
-        "filename":"IMG_0447.mov",
+        "filename":"IMG_0447.mp4",
         "description":""
       }
     ]
@@ -935,7 +952,7 @@ const IMAGES = [
         "description":""
       },
       {
-        "filename":"IMG_0112.mov",
+        "filename":"IMG_0112.mp4",
         "description":""
       },
       {
@@ -943,7 +960,7 @@ const IMAGES = [
         "description":""
       },
       {
-        "filename":"IMG_0113.mov",
+        "filename":"IMG_0113.mp4",
         "description":""
       },
       {
@@ -951,7 +968,7 @@ const IMAGES = [
         "description":""
       },
       {
-        "filename":"IMG_0118.mov",
+        "filename":"IMG_0118.mp4",
         "description":""
       },
       {
@@ -967,7 +984,7 @@ const IMAGES = [
         "description":""
       },
       {
-        "filename":"IMG_0136.mov",
+        "filename":"IMG_0136.mp4",
         "description":""
       },
       {
@@ -979,7 +996,7 @@ const IMAGES = [
         "description":""
       },
       {
-        "filename":"IMG_0144.mov",
+        "filename":"IMG_0144.mp4",
         "description":""
       },
       {
@@ -987,7 +1004,7 @@ const IMAGES = [
         "description":""
       },
       {
-        "filename":"IMG_0146.mov",
+        "filename":"IMG_0146.mp4",
         "description":""
       },
       {
@@ -995,7 +1012,7 @@ const IMAGES = [
         "description":""
       },
       {
-        "filename":"IMG_0148.mov",
+        "filename":"IMG_0148.mp4",
         "description":""
       },
       {
@@ -1011,7 +1028,7 @@ const IMAGES = [
         "description":""
       },
       {
-        "filename":"IMG_0176.mov",
+        "filename":"IMG_0176.mp4",
         "description":""
       },
       {
@@ -1019,7 +1036,7 @@ const IMAGES = [
         "description":""
       },
       {
-        "filename":"IMG_0183.mov",
+        "filename":"IMG_0183.mp4",
         "description":""
       },
       {
@@ -1027,11 +1044,11 @@ const IMAGES = [
         "description":""
       },
       {
-        "filename":"IMG_0196.mov",
+        "filename":"IMG_0196.mp4",
         "description":""
       },
       {
-        "filename":"a144a7b434f64aafa78cd7a4c8b03ec6.mov",
+        "filename":"a144a7b434f64aafa78cd7a4c8b03ec6.mp4",
         "description":""
       }
     ]
@@ -1181,7 +1198,7 @@ const IMAGES = [
         "description":""
       },
       {
-        "filename":"IMG_2343.mov",
+        "filename":"IMG_2343.mp4",
         "description":""
       },
       {
@@ -1220,7 +1237,7 @@ const IMAGES = [
         "description":""
       },
       {
-        "filename":"IMG_0566.mov",
+        "filename":"IMG_0566.mp4",
         "description":""
       }
     ]
@@ -1278,7 +1295,7 @@ const IMAGES = [
         "description":""
       },
       {
-        "filename":"IMG_0299.mov",
+        "filename":"IMG_0299.mp4",
         "description":""
       },
       {
@@ -1321,7 +1338,7 @@ const IMAGES = [
         "description":""
       },
       {
-        "filename":"IMG_0930.mov",
+        "filename":"IMG_0930.mp4",
         "description":""
       },
       {
