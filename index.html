@@ -20,12 +20,11 @@
     }
 
     .card-img-cover-225 {
-      height: 225px;
+      height: 250px;
       overflow: hidden;
-    }
-    .card-img-cover-225 img {
-      object-fit: cover;
-      transform: translateY(calc(-50% + 110px));
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
     }
 
     @media (min-width: 768px) {
@@ -86,26 +85,27 @@
   <script type="text/javascript">
     function renderImages() {
       let albumsHtml = '';
-      for (let title of Object.keys(IMAGES)) {
-        const description = IMAGES[title].description;
-        const files = IMAGES[title].files;
+      for (let album of IMAGES) {
+        const folder = album.folderName;
+        const description = album.description;
+        const date = album.date ? album.date : '';
+        const files = album.files;
         if (files.length === 0) {
           continue;
         }
         const firstFile = files[0];
         const html = `<div class="col">
           <div class="card shadow-sm">
-            <div class="card-img-top card-img-cover-225">
-              <img src="./img/${title}/${firstFile.filename}" />
+            <div class="card-img-top card-img-cover-225" style="background-image: url('./img/${folder}/${firstFile.filename}');">
             </div>
 
             <div class="card-body">
-              <p class="card-text">${title}</p>
+              <p class="card-text">${description}</p>
               <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group">
-                  <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
+                  <button type="button" class="btn btn-sm btn-outline-secondary">View ${files.length} photos</button>
                 </div>
-                <small class="text-muted">...</small>
+                <small class="text-muted">${date}</small>
               </div>
             </div>
           </div>
@@ -115,9 +115,11 @@
       document.getElementById('album-cards').innerHTML = albumsHtml;
     }
 
-const IMAGES = {
-  "Anniversary Dinner":{
-    "description":"",
+const IMAGES = [
+  {
+    folderName: "Anniversary Dinner",
+    description: "Anniversary Dinner",
+    date: "July 17",
     "files":[
       {
         "filename":"0722201726.jpg",
@@ -145,14 +147,10 @@ const IMAGES = {
       }
     ]
   },
-  ".DS_Store":{
-    "description":"",
-    "files":[
-      
-    ]
-  },
-  "Backpacking Trip near Tahoe":{
-    "description":"",
+  {
+    folderName: "Backpacking Trip near Tahoe",
+    description: "Backpacking Trip near Tahoe",
+    date: "June 19-21",
     "files":[
       {
         "filename":"0619201831_HDR.jpg",
@@ -268,8 +266,10 @@ const IMAGES = {
       }
     ]
   },
-  "Beard to Stashe":{
-    "description":"",
+  {
+    folderName: "Beard to Stashe",
+    description: "Beard to Stashe",
+    date: "Aug - Dec",
     "files":[
       {
         "filename":"0905202105.jpg",
@@ -285,8 +285,10 @@ const IMAGES = {
       }
     ]
   },
-  "End of 2019 Cabin":{
-    "description":"",
+  {
+    folderName: "End of 2019 Cabin",
+    "description":"End of 2019 Cabin",
+    date: "Dec 2019",
     "files":[
       {
         "filename":"IMG_9819.jpg",
@@ -322,8 +324,10 @@ const IMAGES = {
       }
     ]
   },
-  "Dasher New Puppy":{
-    "description":"",
+  {
+    folderName: "Dasher New Puppy",
+    "description":"We got a new puppy, Dasher!",
+    date: "May 18",
     "files":[
       {
         "filename":"0518201600.jpg",
@@ -399,8 +403,10 @@ const IMAGES = {
       }
     ]
   },
-  "Family Visiting":{
-    "description":"",
+  {
+    folderName: "Family Visiting",
+    description: "Brendan's family visited from the east coast, driving nearly 48h straight each way (yes, really)!",
+    date: "October",
     "files":[
       {
         "filename":"1024200858j.jpg",
@@ -428,8 +434,10 @@ const IMAGES = {
       }
     ]
   },
-  "First Dishes with Garden Produce":{
-    "description":"",
+  {
+    folderName: "First Dishes with Garden Produce",
+    description: "Our garden bloomed under Lauren's green thumb and we started to make dinners using some of our home-grown produce!",
+    date: "Summer",
     "files":[
       {
         "filename":"IMG_0771.jpg",
@@ -465,8 +473,10 @@ const IMAGES = {
       }
     ]
   },
-  "Floating":{
-    "description":"",
+  {
+    folderName: "Floating",
+    description: "Floating the Truckee river is a family tradition for us, and we didn't let the pandemic hold us back! Everyone got tested the week of the event to ensure we stayed safe.",
+    date: "July 24-27",
     "files":[
       {
         "filename":"0724201309.jpg",
@@ -514,8 +524,10 @@ const IMAGES = {
       }
     ]
   },
-  "Halloween Costumes":{
-    "description":"",
+  {
+    folderName: "Halloween Costumes",
+    "description":"Even though we under quarantine, we still got dressed up for Halloween 👻",
+    date: "Oct 31",
     "files":[
       {
         "filename":"IMG_2851.jpg",
@@ -527,8 +539,10 @@ const IMAGES = {
       }
     ]
   },
-  "Holiday Shoot":{
-    "description":"",
+  {
+    folderName: "Holiday Shoot",
+    "description":"Pictures from our holiday photoshoot. Shoutout to our friend Camille, the photographer 📸",
+    date: "November",
     "files":[
       {
         "filename":"Berman_Holiday2020_Insta_Camizzleful-100.jpg",
@@ -688,8 +702,10 @@ const IMAGES = {
       }
     ]
   },
-  "Laurens Birthday Dinner":{
-    "description":"",
+  {
+    folderName: "Laurens Birthday Dinner",
+    "description": "We celebrated Lauren's birthday with a dinner party and a home-cooked meal by Brendan.",
+    date: "Jan 3",
     "files":[
       {
         "filename":"IMG_9137.jpg",
@@ -745,8 +761,10 @@ const IMAGES = {
       }
     ]
   },
-  "New Garden":{
-    "description":"",
+  {
+    folderName: "New Garden",
+    "description": "Very early into working from home we decided to plant a garden",
+    date: "March",
     "files":[
       {
         "filename":"0314201727.jpg",
@@ -798,8 +816,10 @@ const IMAGES = {
       }
     ]
   },
-  "London":{
-    "description":"",
+  {
+    folderName: "London",
+    "description":"We took a quick weekend trip to London to visit Kru before she moved back to the US!",
+    date: "Feb 13-15",
     "files":[
       {
         "filename":"0213201602.jpg",
@@ -971,8 +991,10 @@ const IMAGES = {
       }
     ]
   },
-  "Pizza Making":{
-    "description":"",
+  {
+    folderName: "Pizza Making",
+    "description":"After purchasing a grill, we got into homemade Pizza. We've experimented some and our favorite is mushroom, sausage and honey drizzled on top.",
+    date: "Fall",
     "files":[
       {
         "filename":"0824201820a_Original.jpg",
@@ -1012,8 +1034,10 @@ const IMAGES = {
       }
     ]
   },
-  "Patio Project":{
-    "description":"",
+  {
+    folderName: "Patio Project",
+    "description":"Brendan decided to build a cobblestone patio in the side yard. It was successful and we now have ~300sqft of usable patio space!",
+    date: "June 12-19",
     "files":[
       {
         "filename":"0612201242.jpg",
@@ -1121,8 +1145,10 @@ const IMAGES = {
       }
     ]
   },
-  "Polar WFH Tech Support":{
-    "description":"",
+  {
+    folderName: "Polar WFH Tech Support",
+    "description":"Early into working from home, Polar was having trouble adjusting to the new lifestyle. He needed some help from Brendan and Lauren...",
+    date: "March",
     "files":[
       {
         "filename":"IMG_0459.jpg",
@@ -1154,8 +1180,10 @@ const IMAGES = {
       }
     ]
   },
-  "San Diego":{
-    "description":"",
+  {
+    folderName: "San Diego",
+    "description":"We took a roadtrip down to San Diego with our 'pod' Chris & Aaron, enjoying the beaches and some new restaurants.",
+    date: "Early December",
     "files":[
       {
         "filename":"1204201953a.jpg",
@@ -1195,8 +1223,10 @@ const IMAGES = {
       }
     ]
   },
-  "Ski Trip with Family":{
-    "description":"",
+  {
+    folderName: "Ski Trip with Family",
+    "description":"We went skiing with Lauren and Alex at Northstar on Lake Tahoe.",
+    date: "Feb",
     "files":[
       {
         "filename":"IMG_0299.jpg",
@@ -1236,8 +1266,10 @@ const IMAGES = {
       }
     ]
   },
-  "Zoom Tasting":{
-    "description":"",
+  {
+    folderName: "Zoom Tasting",
+    "description": "To break up the monotony early into sheltering in place, we planned a few Zoom wine tasting dates with friends.",
+    date: "April",
     "files":[
       {
         "filename":"IMG_0930.jpg",
@@ -1257,7 +1289,7 @@ const IMAGES = {
       }
     ]
   }
-};
+];
 
     renderImages();
   </script>
